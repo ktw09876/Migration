@@ -38,6 +38,7 @@ def create_full_address(row, ini_scan):
     if not ini_row.empty:
         row['FULL_ADDRESS'] = ini_row.iloc[0]['레지스트 영역'][:3] + str(row['cal_scan_buffer']).rjust(5,'0')
 
+        #'비트'에 값이 있으면
         if not pd.isna(row['비트']): 
             row['FULL_ADDRESS'] = row['FULL_ADDRESS'] + '.' + str(row['비트']).rjust(2, '0')
 
@@ -62,6 +63,7 @@ def create_plc_area(row, ini_scan):
 #데이터프레임 시리즈끼리 값 비교하는 게 너무 어렵다 좀 더 공부하자
 #'cal_scan_buffer'
 def create_cal_scan_buffer(row, ini_scan):
+
     #'AD_FLAG' == 'OK'인 대상만 가져와서
     ini_row = ini_scan[
             #ctrl + F 와 비슷한 문자열 찾기 str.contains(';')
@@ -70,21 +72,16 @@ def create_cal_scan_buffer(row, ini_scan):
             ( ~ ini_scan['레지스트 영역'].str.contains(';')) & #ini_scan의 '레지스트 영역'에 ';'가 포함되어 있지 않고
             (ini_scan['태그 그룹'] == row['Tag_group']) & #data_scan의 'Tag_group'값이 ini_scan의 '태그 그룹'에 있으면서
             (ini_scan['start2'] <= row['scan_buffer']) & (row['scan_buffer'] <= ini_scan['end2']) #data의 'scan_buffer'값이 해당 범위에 들어오는 ini_scan 대상
-        ] 
-    # print(ini_row)
+        ]
+    #resist_area2 = ini_row['레지스트 영역2']를 해야 '레지스트 영역2' 컬럼 전체 값을 가져올 줄 알았지만
+    #resist_area2 = ini_row['레지스트 영역2'].iloc[0]를 해야지 전체 값을 가져올 수 있음 왜지?
+    #.iloc[0]는 첫번재 인덱스에 해당하는 값 하나만 가져오는 게 아닌가?
+    resist_area_sli = int(ini_row['레지스트 영역'].str[-5:].iloc[0])
+    resist_area2 = ini_row['레지스트 영역2'].iloc[0]
+    resist_area2 = ini_row['레지스트 영역2'].iloc[0]
     
     #ini_row가 비어있지 않으면 즉, ini_row에 값이 있으면
     if not ini_row.empty: 
-
-        #resist_area2 = ini_row['레지스트 영역2']를 해야 '레지스트 영역2' 컬럼 전체 값을 가져올 줄 알았지만
-        #resist_area2 = ini_row['레지스트 영역2'].iloc[0]를 해야지 전체 값을 가져올 수 있음 왜지?
-        #.iloc[0]는 첫번재 인덱스에 해당하는 값 하나만 가져오는 게 아닌가?
-        resist_area_sli = int(ini_row['레지스트 영역'].str[-5:].iloc[0])
-        resist_area2 = ini_row['레지스트 영역2'].iloc[0]
-        # print(resist_area_sli)
-
-        resist_area2 = ini_row['레지스트 영역2'].iloc[0]
-        # print(resist_area2)
 
         #조건 검사
         #'레지스트 영역' 뒤 부터 5자리가 '레지스트 영역2' 보다 작은 경우
@@ -110,6 +107,8 @@ def create_ad_flag(row, ini_scan):
     #ini_scan['태그 그룹'].values라고 하면 raw data의 1개 row와 ini_scan의 '태그 그룹' 컬럼의 1개 row를 비교하게 됨
     #.empty 조건을 만족하는 행이 없는 경우 사용, 결측값/ ''/ ... 이 있어도 false를 반환한다
     if row['Tag_group'] in ini_scan['태그 그룹'].values:
+
+        #'ERROR_SCAN_NO'조건
         if ini_scan[(ini_scan['태그 그룹'] == row['Tag_group']) & (ini_scan['start2'] <= row['scan_buffer']) & (row['scan_buffer'] <= ini_scan['end2'])].empty:
             row['AD_FLAG'] = 'ERROR_SCAN_NO'
 
