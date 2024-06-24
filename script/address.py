@@ -202,6 +202,9 @@ def main():
     ###필요한 데이터 생성
     addr_df = cli.create_address(raw_df, ini_scans)
 
+    ###생성한 데이터프레임 로컬에 저장
+    addr_df.to_csv(f'{cli.out_data}\data.csv', encoding = 'utf-8-sig')
+
     ###DB insert
     cli.insert_postgre(addr_df, cli.host, cli.port, cli.dbname, cli.username, cli.password)
     
