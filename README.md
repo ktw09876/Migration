@@ -1,5 +1,6 @@
 # 데이터 Migration
-* 1.0원본.csv와 기준정보.txt를 이용해서 기준에 맞는 2.0데이터를 생성, DB에 저장  
+* 1.0원본.csv와 기준정보.txt를 이용해서 기준에 맞는 2.0데이터를 생성, DB에 저장
+* 기준에 맞는 데이터를 생성, 예외 데이터를 Case 별로 구분 
 ### 문제
   1 결측값을 포함한 컬럼이 데이터 타입 문제로 insert가 안됨  
   2 .csv파일의 결측값이 포함되어있는 정수형 데이터를 읽어온 경우 컬럼의 기본 데이터 타입이 'float64'
@@ -18,8 +19,6 @@
 6. 바쁘지만 업무를 문서화 하는 것도 중요하다 . 업무와 함께 조금씩이라도 진행하자
 
 
-<img width="1000" src="https://user-images.githubusercontent.com/93371320/235865236-6d329a87-2d13-4880-bf71-40e10737fa46.png"/>
 <img width="1000" src="https://user-images.githubusercontent.com/93371320/235865359-0a0ad5a7-db3b-4c23-8af4-baad337fc841.png"/>
 <img width="1000" src="https://user-images.githubusercontent.com/93371320/235865366-336f81d4-7451-42ce-9a46-a5f85e998e91.png"/>
-#<img width="1000" src="https://user-images.githubusercontent.com/93371320/235839658-3be25dc4-499d-4f5d-86c3-4dcfa26c0a42.png"/>
-#<img width="1000" src="https://user-images.githubusercontent.com/93371320/235839913-758179e0-a32c-4e86-83c4-25a089a596ca.png"/>
+
